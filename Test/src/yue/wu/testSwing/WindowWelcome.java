@@ -51,7 +51,25 @@ public class WindowWelcome {
 		JLabel lblIcon = new JLabel();
 		ImageIcon img = new ImageIcon("./OracleBank2.jpg");
 		lblIcon.setIcon(img);
-		lblIcon.setBounds(0, 10, 150, 150);
+		lblIcon.setBounds(10, 10, 150, 150);
 		frmWelcome.getContentPane().add(lblIcon);
+		
+		JSeparator separatorUp = new JSeparator();
+		separatorUp.setBounds(155, 35, 315, 2);
+		frmWelcome.getContentPane().add(separatorUp);
+		
+		JSeparator separatorDown = new JSeparator();
+		separatorDown.setBounds(155, 140, 315, 2);
+		frmWelcome.getContentPane().add(separatorDown);
+		
+		JSeparator separatorLeft = new JSeparator();
+		separatorLeft.setOrientation(SwingConstants.VERTICAL);
+		separatorLeft.setBounds(155, 35, 2, 105);
+		frmWelcome.getContentPane().add(separatorLeft);
+		
+		JSeparator separatorRight = new JSeparator();
+		separatorRight.setOrientation(SwingConstants.VERTICAL);
+		separatorRight.setBounds(470, 35, 2, 105);
+		frmWelcome.getContentPane().add(separatorRight);
 	}
 }
