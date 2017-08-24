@@ -11,6 +11,7 @@ public class Window2 {
 
 	private JFrame frmBankSystem;
 	
+	private static JMenu mnStart;
     private static JMenu mnUser;
     private static JMenu mnAdmin;
     
@@ -93,7 +94,7 @@ public class Window2 {
 		JMenuBar menuBar = new JMenuBar();
 		frmBankSystem.setJMenuBar(menuBar);
 		
-		JMenu mnStart = new JMenu("Start");
+		mnStart = new JMenu("Start");
 		menuBar.add(mnStart);
 		
 		JMenuItem mntmWelcome = new JMenuItem("Welcome");
@@ -105,17 +106,18 @@ public class Window2 {
 		mnStart.add(mntmWelcome);
 		
 		JMenuItem mntmLogout = new JMenuItem("Logout");
-		mnStart.add(mntmLogout);
 		mntmLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				logout();
 			}
 		});
+		mnStart.add(mntmLogout);
 		
 		mnUser = new JMenu("User");
 		menuBar.add(mnUser);
 		
 		JMenuItem mntmQuery = new JMenuItem("Query Balance");
+		mntmQuery.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
 		mntmQuery.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				queryBalance();
@@ -148,6 +150,7 @@ public class Window2 {
 		mnUser.add(mntmChange);
 		
 		JMenuItem mntmQueryRecord = new JMenuItem("Query Record");
+		mntmQueryRecord.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
 		mntmQueryRecord.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				queryRecord();
@@ -167,6 +170,7 @@ public class Window2 {
 		mnAdmin.add(mntmAdd);
 		
 		JMenuItem mntmShow = new JMenuItem("Show All Accounts");
+		mntmShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mntmShow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showAllAccounts();
