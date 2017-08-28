@@ -170,7 +170,6 @@ public class Window2 {
 		mnAdmin.add(mntmAdd);
 		
 		JMenuItem mntmShow = new JMenuItem("Show All Accounts");
-		mntmShow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mntmShow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showAllAccounts();
@@ -189,6 +188,8 @@ public class Window2 {
 	public void showTable2() {
 		tableModel2 = new DefaultTableModel(columnTitle2, 0);
 	    table2 = new JTable(tableModel2);
+	    //set to non-editable
+	    table2.setEnabled(false);
 	    sp2 = new JScrollPane(table2);
 		frmBankSystem.getContentPane().add(sp2);
 		//frmBankSystem.pack();
@@ -218,6 +219,10 @@ public class Window2 {
 		
 		double moneyAdded = Double.parseDouble(amount);
 		BankSystem2.depositMoney(moneyAdded);
+		
+		//refresh displayed data
+		queryBalance();
+		queryRecord();
 	}
 	
 	public void withdrawMoney() {
@@ -234,6 +239,10 @@ public class Window2 {
 		}
 		
 		BankSystem2.withdrawMoney(moneyReduced);
+		
+		//refresh displayed data
+		queryBalance();
+		queryRecord();
 	}
 	
 	public void changePassword() {
@@ -284,6 +293,9 @@ public class Window2 {
 		
 		BankSystem2.addAccount(account);
 		BankSystem2.logRecord("OpenAccount", account.balance, account.number);
+		
+		//refresh displayed data
+		showAllAccounts();
 	}
 	
 	public void showAllAccounts() {

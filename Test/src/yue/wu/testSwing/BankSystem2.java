@@ -124,11 +124,12 @@ class BankSystem2 {
 	}
 
 	public static void changePassword(String newPasswd){
-		mAccount.get(mIndex).password = newPasswd;
+		mAccount.get(mIndex).password = SHAencrypt.encryptSHA(newPasswd);
 		writeFile("account.txt");
 	}
 
 	public static void addAccount(AccountInfo account){
+		account.password = SHAencrypt.encryptSHA(account.password);
 		mAccount.add(account);
 		writeFile("account.txt");	
 	}

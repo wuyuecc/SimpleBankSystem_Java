@@ -72,7 +72,7 @@ public class Window1 extends JFrame implements ActionListener {
 		textUsername = new JTextField();
 		textUsername.setBounds(166, 28, 185, 27);
 		frmBankSystem.getContentPane().add(textUsername);
-		textUsername.setColumns(10);
+		//textUsername.setColumns(10);
 
 		JButton btnLogin = new JButton("Login");
 		btnLogin.setBounds(80, 165, 125, 31);
@@ -136,10 +136,11 @@ public class Window1 extends JFrame implements ActionListener {
 		int index;
 		int size = BankSystem2.getSize();
 		boolean flag = false;
+		String password = SHAencrypt.encryptSHA(String.valueOf(passwordField.getPassword()));
 		for (index = 0; index < size; index++)
 		{
 			if (BankSystem2.getAccount(index).number.equals(textUsername.getText()) 
-					&& BankSystem2.getAccount(index).password.equals(String.valueOf(passwordField.getPassword())))
+					&& BankSystem2.getAccount(index).password.equals(password))
 			{
 				flag = true;
 				break;
