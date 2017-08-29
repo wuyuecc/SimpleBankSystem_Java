@@ -20,7 +20,7 @@ public class Window2 {
 	private JTable table1;
 	private JScrollPane sp1;
 
-	private String[] columnTitle2 = { "DATE AND TIME", "OPERATION", "AMOUNT" };
+	private String[] columnTitle2 = { "CARD NUMBER", "DATE AND TIME", "OPERATION", "AMOUNT" };
 	private static DefaultTableModel tableModel2;
 	private JTable table2;
 	private static JScrollPane sp2;
@@ -40,15 +40,18 @@ public class Window2 {
 
 					if (args.equals("user")) {
 						mnAdmin.setEnabled(false);
-						tableModel1.setRowCount(1);
-						tableModel2.setRowCount(5);
+						// tableModel1.setRowCount(1);
+						// tableModel2.setRowCount(5);
 						lblHisRecord.setVisible(true);
 						sp2.setVisible(true);
 					} else if (args.equals("admin")) {
-						mnUser.setEnabled(false);
-						tableModel1.setRowCount(5);
-						lblHisRecord.setVisible(false);
-						sp2.setVisible(false);
+						// mnUser.setEnabled(false);
+						// tableModel1.setRowCount(5);
+						// lblHisRecord.setVisible(false);
+						// sp2.setVisible(false);
+						// tableModel2.setRowCount(5);
+						lblHisRecord.setVisible(true);
+						sp2.setVisible(true);
 					}
 
 					window.frmBankSystem.setVisible(true);
@@ -76,7 +79,7 @@ public class Window2 {
 
 		showTable();
 
-		lblHisRecord = new JLabel("<html><body>Historical Record</body></html>", JLabel.CENTER);
+		lblHisRecord = new JLabel("<html><body>Historical Records</body></html>", JLabel.CENTER);
 		lblHisRecord.setAlignmentX(Component.CENTER_ALIGNMENT);
 		frmBankSystem.getContentPane().add(lblHisRecord);
 
@@ -180,23 +183,58 @@ public class Window2 {
 		mnAdmin.add(mntmShow);
 	}
 
-	private void createPopupMenu() {
-		m_popupMenu = new JPopupMenu();
-		JMenuItem mntmDeposit2 = new JMenuItem();
-		mntmDeposit2.setText("打印本行第一列的数据");
-		mntmDeposit2.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				System.out.println(table1.getValueAt(table1.getSelectedRow(), 0));
+	private void setIndex() {
+		String number = String.valueOf(table1.getValueAt(table1.getSelectedRow(), 0));
+		for (int index = 0; index < BankSystem2.getSize(); index++) {
+			if (BankSystem2.getAccount(index).number.equals(number)) {
+				BankSystem2.setIndex(index);
+				break;
 			}
-		});
-		m_popupMenu.add(mntmDeposit2);
+		}
 	}
 
-	private void mouseRightButtonClick(MouseEvent evt) {
-		if (evt.getButton() == MouseEvent.BUTTON3) {
+	private void createPopupMenu() {
+		m_popupMenu = new JPopupMenu();
+
+		JMenuItem mntmAdminDeposit = new JMenuItem();
+		mntmAdminDeposit.setText("Deposit");
+		mntmAdminDeposit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				depositMoney();
+			}
+		});
+		m_popupMenu.add(mntmAdminDeposit);
+
+		JMenuItem mntmAdminWithdraw = new JMenuItem();
+		mntmAdminWithdraw.setText("Withdraw");
+		mntmAdminWithdraw.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				withdrawMoney();
+			}
+		});
+		m_popupMenu.add(mntmAdminWithdraw);
+
+		JMenuItem mntmAdminChangePassword = new JMenuItem();
+		mntmAdminChangePassword.setText("ChangePassword");
+		mntmAdminChangePassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				changePassword();
+			}
+		});
+		m_popupMenu.add(mntmAdminChangePassword);
+	}
+
+	private void mouseButtonClick(MouseEvent evt) {
+		if (evt.getButton() == MouseEvent.BUTTON1) {
 			if (-1 == table1.rowAtPoint(evt.getPoint())) {
 				return;
 			}
+			setIndex();
+		} else if (evt.getButton() == MouseEvent.BUTTON3) {
+			if (-1 == table1.rowAtPoint(evt.getPoint())) {
+				return;
+			}
+			// setIndex();
 			m_popupMenu.show(table1, evt.getX(), evt.getY());
 		}
 	}
@@ -208,9 +246,10 @@ public class Window2 {
 		frmBankSystem.getContentPane().add(sp1);
 
 		createPopupMenu();
+
 		table1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				mouseRightButtonClick(evt);
+				mouseButtonClick(evt);
 			}
 		});
 	}
@@ -252,7 +291,11 @@ public class Window2 {
 		BankSystem2.depositMoney(moneyAdded);
 
 		// refresh displayed data
-		queryBalance();
+		if (false == BankSystem2.getAdminFlag()) {
+			queryBalance();
+		} else if (true == BankSystem2.getAdminFlag()) {
+			showAllAccounts();
+		}
 		queryRecord();
 	}
 
@@ -273,7 +316,11 @@ public class Window2 {
 		BankSystem2.withdrawMoney(moneyReduced);
 
 		// refresh displayed data
-		queryBalance();
+		if (false == BankSystem2.getAdminFlag()) {
+			queryBalance();
+		} else if (true == BankSystem2.getAdminFlag()) {
+			showAllAccounts();
+		}
 		queryRecord();
 	}
 
@@ -294,19 +341,32 @@ public class Window2 {
 		}
 
 		BankSystem2.changePassword(newPasswdOnce);
+
+		// refresh displayed data
+		if (false == BankSystem2.getAdminFlag()) {
+			queryBalance();
+		} else if (true == BankSystem2.getAdminFlag()) {
+			showAllAccounts();
+		}
 	}
 
 	public void queryRecord() {
 		Vector<HistoricalRecord> records = BankSystem2.queryRecord();
 		int index = 0;
 		int size = records.size();
+
+		// empty table before display
+		tableModel2.setRowCount(0);
+		tableModel2.setRowCount(size);
+
 		while (index < size) {
+			// new records ahead of old ones
+			HistoricalRecord record = records.get(size - 1 - index);
 
-			HistoricalRecord record = records.get(index);
-
-			table2.setValueAt(record.time, index, 0);
-			table2.setValueAt(record.operation, index, 1);
-			table2.setValueAt(record.amount, index, 2);
+			table2.setValueAt(record.number, index, 0);
+			table2.setValueAt(record.time, index, 1);
+			table2.setValueAt(record.operation, index, 2);
+			table2.setValueAt(record.amount, index, 3);
 			index++;
 		}
 	}
@@ -338,6 +398,7 @@ public class Window2 {
 	}
 
 	public void showAllAccounts() {
+
 		int index = 0;
 		int size = BankSystem2.getSize();
 
