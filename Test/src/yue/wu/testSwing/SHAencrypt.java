@@ -44,10 +44,4 @@ class SHAencrypt {
 		return sb.toString();
 	}
 
-	// public static void main(String[] args) {
-	// String str1 = "123456";
-	// String str2 = "";
-	// str2 = SHAencrypt.encryptSHA(str1);
-	// System.out.println(str2);
-	// }
 }

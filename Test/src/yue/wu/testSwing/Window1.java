@@ -110,7 +110,7 @@ public class Window1 extends JFrame implements ActionListener {
 		btnReset.setBounds(226, 165, 125, 31);
 		frmBankSystem.getContentPane().add(btnReset);
 
-		// directly login by press enter
+		// press Enter to login instead of pressing login button
 		frmBankSystem.getRootPane().setDefaultButton(btnLogin);
 	}
 
@@ -132,29 +132,28 @@ public class Window1 extends JFrame implements ActionListener {
 	public void loginAsUser() {
 		int index;
 		int size = BankSystem2.getSize();
-		boolean flag = false;
+		boolean loginFlag = false;
 		String password = SHAencrypt.encryptSHA(String.valueOf(passwordField.getPassword()));
 		for (index = 0; index < size; index++) {
 			if (BankSystem2.getAccount(index).number.equals(textUsername.getText())
 					&& BankSystem2.getAccount(index).password.equals(password)) {
-				flag = true;
+				loginFlag = true;
 				break;
 			}
 		}
 
 		if (index == size) {
-			flag = false;
+			loginFlag = false;
 		}
-
-		BankSystem2.setIndex(index);
-
-		if (flag == true) {
+		
+		if (true == loginFlag) {
 			frmBankSystem.dispose();
 			Window2.notmain("user");
 		} else {
 			JOptionPane.showMessageDialog(null, "Invalid username or password!", "Message", JOptionPane.ERROR_MESSAGE);
 		}
 
+		BankSystem2.setIndex(index);
 		BankSystem2.setAdminFlag(false);
 	}
 
@@ -166,6 +165,7 @@ public class Window1 extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Invalid username or password!", "Message", JOptionPane.ERROR_MESSAGE);
 		}
 
+		BankSystem2.setIndex(-1);
 		BankSystem2.setAdminFlag(true);
 	}
 }

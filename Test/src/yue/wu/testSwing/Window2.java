@@ -11,24 +11,26 @@ public class Window2 {
 
 	private JFrame frmBankSystem;
 
-	private static JMenu mnStart;
+	private JMenu mnStart;
 	private static JMenu mnUser;
 	private static JMenu mnAdmin;
 
 	private String[] columnTitle1 = { "CARD NUMBER", "PASSWORD", "BALANCE" };
-	private static DefaultTableModel tableModel1;
+	private DefaultTableModel tableModel1;
 	private JTable table1;
 	private JScrollPane sp1;
 
 	private String[] columnTitle2 = { "CARD NUMBER", "DATE AND TIME", "OPERATION", "AMOUNT" };
-	private static DefaultTableModel tableModel2;
+	private DefaultTableModel tableModel2;
 	private JTable table2;
-	private static JScrollPane sp2;
+	private JScrollPane sp2;
 
 	private static JLabel lblHisRecord;
 
 	private JPopupMenu m_popupMenu;
-
+	// left click to choose user, and set flag to true, then right click to operate
+	private boolean userChosenFlag = false;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -38,22 +40,13 @@ public class Window2 {
 				try {
 					Window2 window = new Window2();
 
-					if (args.equals("user")) {
+					if (false == BankSystem2.getAdminFlag()) {
 						mnAdmin.setEnabled(false);
-						// tableModel1.setRowCount(1);
-						// tableModel2.setRowCount(5);
-						lblHisRecord.setVisible(true);
-						sp2.setVisible(true);
-					} else if (args.equals("admin")) {
-						// mnUser.setEnabled(false);
-						// tableModel1.setRowCount(5);
-						// lblHisRecord.setVisible(false);
-						// sp2.setVisible(false);
-						// tableModel2.setRowCount(5);
-						lblHisRecord.setVisible(true);
-						sp2.setVisible(true);
 					}
-
+					else if (true == BankSystem2.getAdminFlag()) {
+						mnUser.setEnabled(false);
+					}
+					
 					window.frmBankSystem.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -215,27 +208,39 @@ public class Window2 {
 		m_popupMenu.add(mntmAdminWithdraw);
 
 		JMenuItem mntmAdminChangePassword = new JMenuItem();
-		mntmAdminChangePassword.setText("ChangePassword");
+		mntmAdminChangePassword.setText("Change Password");
 		mntmAdminChangePassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				changePassword();
 			}
 		});
 		m_popupMenu.add(mntmAdminChangePassword);
+		
+		JMenuItem mntmAdminQueryRecord = new JMenuItem();
+		mntmAdminQueryRecord.setText("Query Record");
+		mntmAdminQueryRecord.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				queryRecord();
+			}
+		});
+		m_popupMenu.add(mntmAdminQueryRecord);
 	}
 
-	private void mouseButtonClick(MouseEvent evt) {
+	private void mouseClick(MouseEvent evt) {
 		if (evt.getButton() == MouseEvent.BUTTON1) {
 			if (-1 == table1.rowAtPoint(evt.getPoint())) {
 				return;
 			}
 			setIndex();
+			userChosenFlag = true;
 		} else if (evt.getButton() == MouseEvent.BUTTON3) {
 			if (-1 == table1.rowAtPoint(evt.getPoint())) {
 				return;
 			}
-			// setIndex();
-			m_popupMenu.show(table1, evt.getX(), evt.getY());
+			if (true == userChosenFlag) {
+				m_popupMenu.show(table1, evt.getX(), evt.getY());
+				userChosenFlag = false;
+			}
 		}
 	}
 
@@ -249,7 +254,7 @@ public class Window2 {
 
 		table1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
-				mouseButtonClick(evt);
+				mouseClick(evt);
 			}
 		});
 	}
@@ -270,7 +275,12 @@ public class Window2 {
 	}
 
 	public void queryBalance() {
-		tableModel1 = new DefaultTableModel(columnTitle1, 1);
+		tableModel1 = new DefaultTableModel(columnTitle1, 1) {
+			public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+		};
 		table1.setModel(tableModel1);
 
 		AccountInfo account = BankSystem2.getAccount();
@@ -402,7 +412,12 @@ public class Window2 {
 		int index = 0;
 		int size = BankSystem2.getSize();
 
-		tableModel1 = new DefaultTableModel(columnTitle1, size);
+		tableModel1 = new DefaultTableModel(columnTitle1, size) {
+			public boolean isCellEditable(int row, int column)
+            {
+                return false;
+            }
+		};
 		table1.setModel(tableModel1);
 
 		while (index < size) {

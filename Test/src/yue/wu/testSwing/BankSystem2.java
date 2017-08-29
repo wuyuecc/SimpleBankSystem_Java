@@ -9,8 +9,7 @@ class BankSystem2 {
 
 	private static Vector<AccountInfo> mAccount;
 	private static Vector<HistoricalRecord> mHistoricalRecord;
-	private static int mIndex = 0;
-
+	private static int mIndex;
 	private static boolean adminFlag;
 	
 	public BankSystem2() {
