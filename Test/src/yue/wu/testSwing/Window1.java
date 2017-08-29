@@ -145,7 +145,7 @@ public class Window1 extends JFrame implements ActionListener {
 		if (index == size) {
 			loginFlag = false;
 		}
-		
+
 		if (true == loginFlag) {
 			frmBankSystem.dispose();
 			Window2.notmain("user");

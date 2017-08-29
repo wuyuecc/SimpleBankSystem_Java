@@ -30,7 +30,7 @@ public class Window2 {
 	private JPopupMenu m_popupMenu;
 	// left click to choose user, and set flag to true, then right click to operate
 	private boolean userChosenFlag = false;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -42,11 +42,10 @@ public class Window2 {
 
 					if (false == BankSystem2.getAdminFlag()) {
 						mnAdmin.setEnabled(false);
-					}
-					else if (true == BankSystem2.getAdminFlag()) {
+					} else if (true == BankSystem2.getAdminFlag()) {
 						mnUser.setEnabled(false);
 					}
-					
+
 					window.frmBankSystem.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -215,7 +214,7 @@ public class Window2 {
 			}
 		});
 		m_popupMenu.add(mntmAdminChangePassword);
-		
+
 		JMenuItem mntmAdminQueryRecord = new JMenuItem();
 		mntmAdminQueryRecord.setText("Query Record");
 		mntmAdminQueryRecord.addActionListener(new ActionListener() {
@@ -276,10 +275,9 @@ public class Window2 {
 
 	public void queryBalance() {
 		tableModel1 = new DefaultTableModel(columnTitle1, 1) {
-			public boolean isCellEditable(int row, int column)
-            {
-                return false;
-            }
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 		table1.setModel(tableModel1);
 
@@ -413,10 +411,9 @@ public class Window2 {
 		int size = BankSystem2.getSize();
 
 		tableModel1 = new DefaultTableModel(columnTitle1, size) {
-			public boolean isCellEditable(int row, int column)
-            {
-                return false;
-            }
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 		table1.setModel(tableModel1);
 

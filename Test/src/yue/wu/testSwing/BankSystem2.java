@@ -11,7 +11,7 @@ class BankSystem2 {
 	private static Vector<HistoricalRecord> mHistoricalRecord;
 	private static int mIndex;
 	private static boolean adminFlag;
-	
+
 	public BankSystem2() {
 	}
 
@@ -187,9 +187,9 @@ class BankSystem2 {
 	public static boolean getAdminFlag() {
 		return adminFlag;
 	}
-	
+
 	public static void setAdminFlag(boolean flag) {
 		adminFlag = flag;
 	}
-	
+
 }
