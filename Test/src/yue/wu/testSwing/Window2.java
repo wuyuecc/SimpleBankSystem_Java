@@ -30,6 +30,8 @@ public class Window2 {
 	private JPopupMenu m_popupMenu;
 	// left click to choose user, and set flag to true, then right click to operate
 	private boolean userChosenFlag = false;
+	// index of user data linked list, not index of table
+	private int[] selectedUserIndex;
 
 	/**
 	 * Launch the application.
@@ -176,11 +178,29 @@ public class Window2 {
 	}
 
 	private void setIndex() {
-		String number = String.valueOf(table1.getValueAt(table1.getSelectedRow(), 0));
-		for (int index = 0; index < BankSystem2.getSize(); index++) {
-			if (BankSystem2.getAccount(index).number.equals(number)) {
-				BankSystem2.setIndex(index);
-				break;
+		int[] selectedRowIndexes = table1.getSelectedRows();
+		int count = selectedRowIndexes.length;
+		selectedUserIndex = new int[count];
+
+		if (count == 1) {
+			String number = String.valueOf(table1.getValueAt(table1.getSelectedRow(), 0));
+			for (int index = 0; index < BankSystem2.getSize(); index++) {
+				if (BankSystem2.getAccount(index).number.equals(number)) {
+					BankSystem2.setIndex(index);
+					selectedUserIndex[0] = index;
+					break;
+				}
+			}
+		} else if (count > 1) {
+			int size = BankSystem2.getSize();
+			for (int i = 0; i < count; i++) {
+				String number = String.valueOf(table1.getValueAt(selectedRowIndexes[i], 0));
+				for (int index = 0; index < size; index++) {
+					if (BankSystem2.getAccount(index).number.equals(number)) {
+						selectedUserIndex[i] = index;
+						break;
+					}
+				}
 			}
 		}
 	}
@@ -192,7 +212,11 @@ public class Window2 {
 		mntmAdminDeposit.setText("Deposit");
 		mntmAdminDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				depositMoney();
+				if (selectedUserIndex.length == 1) {
+					depositMoney();
+				} else if (selectedUserIndex.length > 1) {
+					depositMoneyBatch();
+				}
 			}
 		});
 		m_popupMenu.add(mntmAdminDeposit);
@@ -201,7 +225,11 @@ public class Window2 {
 		mntmAdminWithdraw.setText("Withdraw");
 		mntmAdminWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				withdrawMoney();
+				if (selectedUserIndex.length == 1) {
+					withdrawMoney();
+				} else if (selectedUserIndex.length > 1) {
+					withdrawMoneyBatch();
+				}
 			}
 		});
 		m_popupMenu.add(mntmAdminWithdraw);
@@ -426,4 +454,39 @@ public class Window2 {
 		}
 	}
 
+	public void depositMoneyBatch() {
+		String amount = JOptionPane.showInputDialog(null, "Please input amount to be deposited for all selected users:",
+				"Deposit", JOptionPane.PLAIN_MESSAGE);
+		if (null == amount || amount.equals("")) {
+			return;
+		}
+		double moneyAdded = Double.parseDouble(amount);
+
+		for (int i = 0; i < selectedUserIndex.length; i++) {
+			BankSystem2.setIndex(selectedUserIndex[i]);
+			BankSystem2.depositMoney(moneyAdded);
+		}
+
+		showAllAccounts();
+	}
+
+	public void withdrawMoneyBatch() {
+		String amount = JOptionPane.showInputDialog(null, "Please input amount to be withdrawed:", "Withdraw",
+				JOptionPane.PLAIN_MESSAGE);
+		if (null == amount || amount.equals("")) {
+			return;
+		}
+		double moneyReduced = Double.parseDouble(amount);
+
+		for (int i = 0; i < selectedUserIndex.length; i++) {
+			BankSystem2.setIndex(selectedUserIndex[i]);
+			if (moneyReduced > BankSystem2.getAccount().balance) {
+				JOptionPane.showMessageDialog(null, "Account " + BankSystem2.getAccount().number + " Not enough money!",
+						"Message", JOptionPane.ERROR_MESSAGE);
+				continue;
+			}
+			BankSystem2.withdrawMoney(moneyReduced);
+		}
+		showAllAccounts();
+	}
 }
