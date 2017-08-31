@@ -62,18 +62,21 @@ public class Window2 {
 	public Window2() {
 		initialize();
 
-		JLabel lblWelcome = new JLabel("<html><body>Welcome to Simple Bank System<br><br></body></html>",
-				JLabel.CENTER);
+		JLabel lblWelcome = new JLabel("<html><body><br>Welcome to Simple Bank System<br><br></body></html>", JLabel.CENTER);
+		lblWelcome.setForeground(Color.RED);
+		lblWelcome.setFont(new Font("Microsoft YaHei UI", Font.BOLD, 20));
 		lblWelcome.setAlignmentX(Component.CENTER_ALIGNMENT);
 		frmBankSystem.getContentPane().add(lblWelcome);
 
 		JLabel lblAccInfo = new JLabel("<html><body>Account Information</body></html>", JLabel.CENTER);
+		lblAccInfo.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
 		lblAccInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		frmBankSystem.getContentPane().add(lblAccInfo);
 
 		showTable();
 
-		lblHisRecord = new JLabel("<html><body>Historical Records</body></html>", JLabel.CENTER);
+		lblHisRecord = new JLabel("<html><body><br>Historical Records</body></html>", JLabel.CENTER);
+		lblHisRecord.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
 		lblHisRecord.setAlignmentX(Component.CENTER_ALIGNMENT);
 		frmBankSystem.getContentPane().add(lblHisRecord);
 
@@ -94,9 +97,11 @@ public class Window2 {
 		frmBankSystem.setJMenuBar(menuBar);
 
 		mnStart = new JMenu("Start");
+		mnStart.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		menuBar.add(mnStart);
 
 		JMenuItem mntmWelcome = new JMenuItem("Welcome");
+		mntmWelcome.setFont(new Font("Microsoft YaHei", Font.PLAIN, 14));
 		mntmWelcome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				WindowWelcome.notmain(null);
@@ -105,6 +110,7 @@ public class Window2 {
 		mnStart.add(mntmWelcome);
 
 		JMenuItem mntmLogout = new JMenuItem("Logout");
+		mntmLogout.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		mntmLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				logout();
@@ -113,9 +119,11 @@ public class Window2 {
 		mnStart.add(mntmLogout);
 
 		mnUser = new JMenu("User");
+		mnUser.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		menuBar.add(mnUser);
 
 		JMenuItem mntmQuery = new JMenuItem("Query Balance");
+		mntmQuery.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		mntmQuery.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
 		mntmQuery.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -125,6 +133,7 @@ public class Window2 {
 		mnUser.add(mntmQuery);
 
 		JMenuItem mntmDeposit = new JMenuItem("Deposit Money");
+		mntmDeposit.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		mntmDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				depositMoney();
@@ -133,6 +142,7 @@ public class Window2 {
 		mnUser.add(mntmDeposit);
 
 		JMenuItem mntmDraw = new JMenuItem("Withraw Money");
+		mntmDraw.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		mntmDraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				withdrawMoney();
@@ -141,6 +151,7 @@ public class Window2 {
 		mnUser.add(mntmDraw);
 
 		JMenuItem mntmChange = new JMenuItem("Change Password");
+		mntmChange.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		mntmChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				changePassword();
@@ -149,6 +160,7 @@ public class Window2 {
 		mnUser.add(mntmChange);
 
 		JMenuItem mntmQueryRecord = new JMenuItem("Query Record");
+		mntmQueryRecord.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		mntmQueryRecord.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
 		mntmQueryRecord.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,9 +170,11 @@ public class Window2 {
 		mnUser.add(mntmQueryRecord);
 
 		mnAdmin = new JMenu("Admin");
+		mnAdmin.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		menuBar.add(mnAdmin);
 
 		JMenuItem mntmAdd = new JMenuItem("Add Account");
+		mntmAdd.setFont(new Font("Microsoft YaHei", Font.PLAIN, 14));
 		mntmAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addAccount();
@@ -169,6 +183,7 @@ public class Window2 {
 		mnAdmin.add(mntmAdd);
 
 		JMenuItem mntmShow = new JMenuItem("Show All Accounts");
+		mntmShow.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
 		mntmShow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				showAllAccounts();
